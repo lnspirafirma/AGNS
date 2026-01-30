@@ -1,0 +1,228 @@
+{
+  "$defs": {
+    "BaseShape": {
+      "enum": [
+        "spiral_vortex",
+        "nebula",
+        "sphere"
+      ],
+      "title": "BaseShape",
+      "type": "string"
+    },
+    "CognitiveState": {
+      "additionalProperties": false,
+      "properties": {
+        "thinking_level": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Thinking Level",
+          "type": "number"
+        },
+        "entropy": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Entropy",
+          "type": "number"
+        },
+        "coherence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Coherence",
+          "type": "number"
+        },
+        "pulse_hz": {
+          "exclusiveMinimum": 0.0,
+          "maximum": 20.0,
+          "title": "Pulse Hz",
+          "type": "number"
+        },
+        "vector": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "maximum": 1.0,
+              "minimum": -1.0,
+              "type": "number"
+            },
+            {
+              "maximum": 1.0,
+              "minimum": -1.0,
+              "type": "number"
+            }
+          ],
+          "title": "Vector",
+          "type": "array"
+        },
+        "temperature": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Temperature",
+          "type": "number"
+        }
+      },
+      "required": [
+        "thinking_level",
+        "entropy",
+        "coherence",
+        "pulse_hz",
+        "vector",
+        "temperature"
+      ],
+      "title": "CognitiveState",
+      "type": "object"
+    },
+    "ColorPalette": {
+      "additionalProperties": false,
+      "properties": {
+        "primary": {
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "title": "Primary",
+          "type": "string"
+        },
+        "secondary": {
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "title": "Secondary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "primary",
+        "secondary"
+      ],
+      "title": "ColorPalette",
+      "type": "object"
+    },
+    "DSLVersion": {
+      "enum": [
+        "1.0"
+      ],
+      "title": "DSLVersion",
+      "type": "string"
+    },
+    "Intent": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/IntentCategory"
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "category",
+        "confidence"
+      ],
+      "title": "Intent",
+      "type": "object"
+    },
+    "IntentCategory": {
+      "enum": [
+        "deep_analysis",
+        "exploration",
+        "idle"
+      ],
+      "title": "IntentCategory",
+      "type": "string"
+    },
+    "LightLayer": {
+      "enum": [
+        "flux",
+        "color",
+        "crystal"
+      ],
+      "title": "LightLayer",
+      "type": "string"
+    },
+    "Manifestation": {
+      "additionalProperties": false,
+      "properties": {
+        "layer": {
+          "$ref": "#/$defs/LightLayer"
+        },
+        "base_shape": {
+          "$ref": "#/$defs/BaseShape"
+        },
+        "motion_dynamics": {
+          "$ref": "#/$defs/MotionDynamics"
+        },
+        "color_palette": {
+          "$ref": "#/$defs/ColorPalette"
+        }
+      },
+      "required": [
+        "layer",
+        "base_shape",
+        "motion_dynamics",
+        "color_palette"
+      ],
+      "title": "Manifestation",
+      "type": "object"
+    },
+    "MotionDynamics": {
+      "enum": [
+        "centripetal_acceleration",
+        "laminar_flow",
+        "static"
+      ],
+      "title": "MotionDynamics",
+      "type": "string"
+    },
+    "Telemetry": {
+      "additionalProperties": false,
+      "properties": {
+        "timestamp_ms": {
+          "title": "Timestamp Ms",
+          "type": "integer"
+        },
+        "source": {
+          "const": "agns_core",
+          "title": "Source",
+          "type": "string"
+        },
+        "deterministic_hash": {
+          "title": "Deterministic Hash",
+          "type": "string"
+        }
+      },
+      "required": [
+        "timestamp_ms",
+        "source",
+        "deterministic_hash"
+      ],
+      "title": "Telemetry",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "dsl_version": {
+      "$ref": "#/$defs/DSLVersion"
+    },
+    "intent": {
+      "$ref": "#/$defs/Intent"
+    },
+    "cognitive_state": {
+      "$ref": "#/$defs/CognitiveState"
+    },
+    "manifestation": {
+      "$ref": "#/$defs/Manifestation"
+    },
+    "telemetry": {
+      "$ref": "#/$defs/Telemetry"
+    }
+  },
+  "required": [
+    "dsl_version",
+    "intent",
+    "cognitive_state",
+    "manifestation",
+    "telemetry"
+  ],
+  "title": "CognitiveDSL",
+  "type": "object"
+}
