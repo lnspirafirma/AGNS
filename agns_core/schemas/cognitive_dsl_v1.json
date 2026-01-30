@@ -4,8 +4,7 @@
       "enum": [
         "spiral_vortex",
         "nebula",
-        "sphere",
-        "wave"
+        "sphere"
       ],
       "title": "BaseShape",
       "type": "string"
@@ -31,82 +30,60 @@
           "title": "Coherence",
           "type": "number"
         },
-        "energy_level": {
-          "maximum": 1.0,
-          "minimum": 0.0,
-          "title": "Energy Level",
-          "type": "number"
-        },
         "pulse_hz": {
-          "minimum": 0.0,
+          "exclusiveMinimum": 0.0,
+          "maximum": 20.0,
           "title": "Pulse Hz",
           "type": "number"
         },
         "vector": {
-          "items": {
-            "type": "number"
-          },
           "maxItems": 2,
           "minItems": 2,
+          "prefixItems": [
+            {
+              "maximum": 1.0,
+              "minimum": -1.0,
+              "type": "number"
+            },
+            {
+              "maximum": 1.0,
+              "minimum": -1.0,
+              "type": "number"
+            }
+          ],
           "title": "Vector",
           "type": "array"
+        },
+        "temperature": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Temperature",
+          "type": "number"
         }
       },
       "required": [
         "thinking_level",
         "entropy",
         "coherence",
-        "energy_level",
         "pulse_hz",
-        "vector"
+        "vector",
+        "temperature"
       ],
       "title": "CognitiveState",
-      "type": "object"
-    },
-    "ColorMode": {
-      "enum": [
-        "additive_light"
-      ],
-      "title": "ColorMode",
-      "type": "string"
-    },
-    "ColorModel": {
-      "additionalProperties": false,
-      "properties": {
-        "mode": {
-          "$ref": "#/$defs/ColorMode"
-        },
-        "palette": {
-          "$ref": "#/$defs/ColorPalette"
-        }
-      },
-      "required": [
-        "mode",
-        "palette"
-      ],
-      "title": "ColorModel",
       "type": "object"
     },
     "ColorPalette": {
       "additionalProperties": false,
       "properties": {
         "primary": {
-          "items": {
-            "type": "integer"
-          },
-          "maxItems": 3,
-          "minItems": 3,
+          "pattern": "^#[0-9A-Fa-f]{6}$",
           "title": "Primary",
-          "type": "array"
+          "type": "string"
         },
         "secondary": {
-          "items": {
-            "type": "integer"
-          },
-          "maxItems": 3,
-          "minItems": 3,
+          "pattern": "^#[0-9A-Fa-f]{6}$",
           "title": "Secondary",
-          "type": "array"
+          "type": "string"
         }
       },
       "required": [
@@ -116,57 +93,12 @@
       "title": "ColorPalette",
       "type": "object"
     },
-    "Constraints": {
-      "additionalProperties": false,
-      "properties": {
-        "allow_color": {
-          "default": true,
-          "title": "Allow Color",
-          "type": "boolean"
-        },
-        "max_brightness": {
-          "anyOf": [
-            {
-              "maximum": 1.0,
-              "minimum": 0.0,
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Max Brightness"
-        },
-        "forbidden_shapes": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Forbidden Shapes"
-        },
-        "resource_limits": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/ResourceLimits"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null
-        }
-      },
-      "title": "Constraints",
-      "type": "object"
+    "DSLVersion": {
+      "enum": [
+        "1.0"
+      ],
+      "title": "DSLVersion",
+      "type": "string"
     },
     "Intent": {
       "additionalProperties": false,
@@ -179,118 +111,76 @@
           "minimum": 0.0,
           "title": "Confidence",
           "type": "number"
-        },
-        "activation_rule": {
-          "title": "Activation Rule",
-          "type": "string"
         }
       },
       "required": [
         "category",
-        "confidence",
-        "activation_rule"
+        "confidence"
       ],
       "title": "Intent",
       "type": "object"
     },
     "IntentCategory": {
       "enum": [
-        "idle",
         "deep_analysis",
-        "reflection",
-        "decision"
+        "exploration",
+        "idle"
       ],
       "title": "IntentCategory",
+      "type": "string"
+    },
+    "LightLayer": {
+      "enum": [
+        "flux",
+        "color",
+        "crystal"
+      ],
+      "title": "LightLayer",
       "type": "string"
     },
     "Manifestation": {
       "additionalProperties": false,
       "properties": {
         "layer": {
-          "$ref": "#/$defs/ManifestationLayer"
+          "$ref": "#/$defs/LightLayer"
         },
         "base_shape": {
           "$ref": "#/$defs/BaseShape"
         },
-        "motion": {
-          "$ref": "#/$defs/Motion"
+        "motion_dynamics": {
+          "$ref": "#/$defs/MotionDynamics"
         },
-        "color_model": {
-          "$ref": "#/$defs/ColorModel"
+        "color_palette": {
+          "$ref": "#/$defs/ColorPalette"
         }
       },
       "required": [
         "layer",
         "base_shape",
-        "motion",
-        "color_model"
+        "motion_dynamics",
+        "color_palette"
       ],
       "title": "Manifestation",
       "type": "object"
     },
-    "ManifestationLayer": {
+    "MotionDynamics": {
       "enum": [
-        "flux",
-        "color",
-        "crystal"
+        "centripetal_acceleration",
+        "laminar_flow",
+        "static"
       ],
-      "title": "ManifestationLayer",
+      "title": "MotionDynamics",
       "type": "string"
-    },
-    "Motion": {
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "$ref": "#/$defs/MotionType"
-        },
-        "acceleration": {
-          "title": "Acceleration",
-          "type": "number"
-        }
-      },
-      "required": [
-        "type",
-        "acceleration"
-      ],
-      "title": "Motion",
-      "type": "object"
-    },
-    "MotionType": {
-      "enum": [
-        "centripetal",
-        "radial",
-        "oscillatory"
-      ],
-      "title": "MotionType",
-      "type": "string"
-    },
-    "ResourceLimits": {
-      "additionalProperties": false,
-      "properties": {
-        "cpu_ms": {
-          "title": "Cpu Ms",
-          "type": "integer"
-        },
-        "gpu_ms": {
-          "title": "Gpu Ms",
-          "type": "integer"
-        }
-      },
-      "required": [
-        "cpu_ms",
-        "gpu_ms"
-      ],
-      "title": "ResourceLimits",
-      "type": "object"
     },
     "Telemetry": {
       "additionalProperties": false,
       "properties": {
-        "timestamp": {
-          "title": "Timestamp",
-          "type": "number"
+        "timestamp_ms": {
+          "title": "Timestamp Ms",
+          "type": "integer"
         },
         "source": {
+          "const": "agns_core",
           "title": "Source",
           "type": "string"
         },
@@ -300,7 +190,7 @@
         }
       },
       "required": [
-        "timestamp",
+        "timestamp_ms",
         "source",
         "deterministic_hash"
       ],
@@ -311,14 +201,7 @@
   "additionalProperties": false,
   "properties": {
     "dsl_version": {
-      "const": "1.0",
-      "default": "1.0",
-      "title": "Dsl Version",
-      "type": "string"
-    },
-    "lesson_id": {
-      "title": "Lesson Id",
-      "type": "string"
+      "$ref": "#/$defs/DSLVersion"
     },
     "intent": {
       "$ref": "#/$defs/Intent"
@@ -329,27 +212,16 @@
     "manifestation": {
       "$ref": "#/$defs/Manifestation"
     },
-    "constraints": {
-      "$ref": "#/$defs/Constraints"
-    },
     "telemetry": {
-      "anyOf": [
-        {
-          "$ref": "#/$defs/Telemetry"
-        },
-        {
-          "type": "null"
-        }
-      ],
-      "default": null
+      "$ref": "#/$defs/Telemetry"
     }
   },
   "required": [
-    "lesson_id",
+    "dsl_version",
     "intent",
     "cognitive_state",
     "manifestation",
-    "constraints"
+    "telemetry"
   ],
   "title": "CognitiveDSL",
   "type": "object"

@@ -1,103 +1,103 @@
+from __future__ import annotations
+
+from typing import Literal, Tuple
 from enum import Enum
-from typing import List, Optional, Literal
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, confloat
+
+
+# ==========================================================
+# ENUMS (Closed World Assumption)
+# ==========================================================
+
+class DSLVersion(str, Enum):
+    v1_0 = "1.0"
+
 
 class IntentCategory(str, Enum):
-    IDLE = "idle"
-    DEEP_ANALYSIS = "deep_analysis"
-    REFLECTION = "reflection"
-    DECISION = "decision"
+    deep_analysis = "deep_analysis"
+    exploration = "exploration"
+    idle = "idle"
+
+
+class LightLayer(str, Enum):
+    flux = "flux"
+    color = "color"
+    crystal = "crystal"
+
+
+class BaseShape(str, Enum):
+    spiral_vortex = "spiral_vortex"
+    nebula = "nebula"
+    sphere = "sphere"
+
+
+class MotionDynamics(str, Enum):
+    centripetal_acceleration = "centripetal_acceleration"
+    laminar_flow = "laminar_flow"
+    static = "static"
+
+
+# ==========================================================
+# CORE BLOCKS
+# ==========================================================
 
 class Intent(BaseModel):
     category: IntentCategory
-    confidence: float = Field(..., ge=0.0, le=1.0)
-    activation_rule: str
+    confidence: confloat(ge=0.0, le=1.0)
 
-    model_config = {"extra": "forbid"}
+    class Config:
+        extra = "forbid"
+
 
 class CognitiveState(BaseModel):
-    thinking_level: float = Field(..., ge=0.0, le=1.0)
-    entropy: float = Field(..., ge=0.0, le=1.0)
-    coherence: float = Field(..., ge=0.0, le=1.0)
-    energy_level: float = Field(..., ge=0.0, le=1.0)
-    pulse_hz: float = Field(..., ge=0.0)
-    vector: List[float] = Field(..., min_length=2, max_length=2)
+    thinking_level: confloat(ge=0.0, le=1.0)
+    entropy: confloat(ge=0.0, le=1.0)
+    coherence: confloat(ge=0.0, le=1.0)
+    pulse_hz: confloat(gt=0.0, le=20.0)
+    vector: Tuple[confloat(ge=-1.0, le=1.0), confloat(ge=-1.0, le=1.0)]
+    temperature: confloat(ge=0.0, le=1.0)
 
-    model_config = {"extra": "forbid"}
+    class Config:
+        extra = "forbid"
 
-class ManifestationLayer(str, Enum):
-    FLUX = "flux"
-    COLOR = "color"
-    CRYSTAL = "crystal"
-
-class BaseShape(str, Enum):
-    SPIRAL_VORTEX = "spiral_vortex"
-    NEBULA = "nebula"
-    SPHERE = "sphere"
-    WAVE = "wave"
-
-class MotionType(str, Enum):
-    CENTRIPETAL = "centripetal"
-    RADIAL = "radial"
-    OSCILLATORY = "oscillatory"
-
-class Motion(BaseModel):
-    type: MotionType
-    acceleration: float
-
-    model_config = {"extra": "forbid"}
-
-class ColorMode(str, Enum):
-    ADDITIVE_LIGHT = "additive_light"
 
 class ColorPalette(BaseModel):
-    primary: List[int] = Field(..., min_length=3, max_length=3)
-    secondary: List[int] = Field(..., min_length=3, max_length=3)
+    primary: str = Field(..., pattern=r"^#[0-9A-Fa-f]{6}$")
+    secondary: str = Field(..., pattern=r"^#[0-9A-Fa-f]{6}$")
 
-    model_config = {"extra": "forbid"}
+    class Config:
+        extra = "forbid"
 
-class ColorModel(BaseModel):
-    mode: ColorMode
-    palette: ColorPalette
-
-    model_config = {"extra": "forbid"}
 
 class Manifestation(BaseModel):
-    layer: ManifestationLayer
+    layer: LightLayer
     base_shape: BaseShape
-    motion: Motion
-    color_model: ColorModel
+    motion_dynamics: MotionDynamics
+    color_palette: ColorPalette
 
-    model_config = {"extra": "forbid"}
+    class Config:
+        extra = "forbid"
 
-class ResourceLimits(BaseModel):
-    cpu_ms: int
-    gpu_ms: int
-
-    model_config = {"extra": "forbid"}
-
-class Constraints(BaseModel):
-    allow_color: bool = True
-    max_brightness: Optional[float] = Field(None, ge=0.0, le=1.0)
-    forbidden_shapes: Optional[List[str]] = None
-    resource_limits: Optional[ResourceLimits] = None
-
-    model_config = {"extra": "forbid"}
 
 class Telemetry(BaseModel):
-    timestamp: float
-    source: str
+    timestamp_ms: int
+    source: Literal["agns_core"]
     deterministic_hash: str
 
-    model_config = {"extra": "forbid"}
+    class Config:
+        extra = "forbid"
+
+
+# ==========================================================
+# ROOT DSL OBJECT
+# ==========================================================
 
 class CognitiveDSL(BaseModel):
-    dsl_version: Literal["1.0"] = "1.0"
-    lesson_id: str
+    dsl_version: DSLVersion
     intent: Intent
     cognitive_state: CognitiveState
     manifestation: Manifestation
-    constraints: Constraints
-    telemetry: Optional[Telemetry] = None
+    telemetry: Telemetry
 
-    model_config = {"extra": "forbid"}
+    class Config:
+        extra = "forbid"

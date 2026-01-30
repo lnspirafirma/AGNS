@@ -1,100 +1,60 @@
-from typing import List, Any
-from .base import Reasoner
-from ..cognition.lesson import LessonPack
+import time
+import hashlib
 from ..models.cognitive_dsl import (
-    CognitiveDSL, Intent, IntentCategory, CognitiveState,
-    Manifestation, ManifestationLayer, BaseShape, Motion, MotionType,
-    ColorModel, ColorPalette, ColorMode, Constraints
+    CognitiveDSL,
+    DSLVersion,
+    Intent,
+    IntentCategory,
+    CognitiveState,
+    Manifestation,
+    LightLayer,
+    BaseShape,
+    MotionDynamics,
+    ColorPalette,
+    Telemetry,
 )
 
+
 class MockReasoner:
-    def _hex_to_rgb(self, hex_color: str) -> List[int]:
-        hex_color = hex_color.lstrip('#')
-        return list(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+    """
+    Deterministic cognitive teacher.
+    Emits ONLY valid Cognitive DSL v1.0.
+    """
 
-    async def reason(self, lesson: LessonPack, payload: dict) -> CognitiveDSL:
-        # Deterministic Logic
+    async def reason(self, intent_category: IntentCategory) -> CognitiveDSL:
+        # Note: The original prompt had synchronous 'reason', but 'base.py' Protocol defines async.
+        # I will keep it async to match the protocol and application architecture.
+        now_ms = int(time.time() * 1000)
 
-        # 1. Intent
-        intent = Intent(
-            category=IntentCategory(lesson.intent_category),
-            confidence=0.82,
-            activation_rule="morph_reasoning_01"
-        )
+        payload_fingerprint = f"{intent_category}:{now_ms}"
+        digest = hashlib.sha256(payload_fingerprint.encode()).hexdigest()
 
-        # 2. Cognitive State
-        # Deterministic based on intent
-        if lesson.intent_category == "deep_analysis":
-            thinking_level = 0.87
-            entropy = 0.62
-            coherence = 0.74
-            energy_level = 0.81
-            pulse_hz = 3.2
-            vector = [0.12, -0.44]
-        else:
-            # Default values for other intents
-            thinking_level = 0.5
-            entropy = 0.5
-            coherence = 0.5
-            energy_level = 0.5
-            pulse_hz = 1.0
-            vector = [0.0, 0.0]
-
-        cognitive_state = CognitiveState(
-            thinking_level=thinking_level,
-            entropy=entropy,
-            coherence=coherence,
-            energy_level=energy_level,
-            pulse_hz=pulse_hz,
-            vector=vector
-        )
-
-        # 3. Manifestation
-        base_shape_str = lesson.morphology_rules.get("base_shape", "sphere")
-        motion_str = lesson.morphology_rules.get("motion", "radial")
-
-        colors = lesson.morphology_rules.get("allowed_colors", ["#000000", "#FFFFFF"])
-        if len(colors) < 2:
-             colors = ["#000000", "#FFFFFF"]
-
-        primary_rgb = self._hex_to_rgb(colors[0])
-        secondary_rgb = self._hex_to_rgb(colors[1])
-
-        manifestation = Manifestation(
-            layer=ManifestationLayer.FLUX,
-            base_shape=BaseShape(base_shape_str),
-            motion=Motion(
-                type=MotionType(motion_str),
-                acceleration=0.7
-            ),
-            color_model=ColorModel(
-                mode=ColorMode.ADDITIVE_LIGHT,
-                palette=ColorPalette(
-                    primary=primary_rgb,
-                    secondary=secondary_rgb
-                )
-            )
-        )
-
-        # 4. Constraints
-        guardrails = lesson.guardrails or {}
-        # Mapping max_energy to max_brightness as a reasonable fallback
-        max_brightness = guardrails.get("max_energy", 0.9)
-
-        constraints = Constraints(
-            allow_color=True,
-            max_brightness=max_brightness,
-            forbidden_shapes=None,
-            resource_limits=None
-        )
-
-        # 5. Return DSL
         return CognitiveDSL(
-            dsl_version="1.0",
-            lesson_id=lesson.lesson_id,
-            intent=intent,
-            cognitive_state=cognitive_state,
-            manifestation=manifestation,
-            constraints=constraints,
-            telemetry=None
+            dsl_version=DSLVersion.v1_0,
+            intent=Intent(
+                category=intent_category,
+                confidence=0.85,
+            ),
+            cognitive_state=CognitiveState(
+                thinking_level=0.9,
+                entropy=0.6,
+                coherence=0.8,
+                pulse_hz=6.0,
+                vector=(0.0, 1.0),
+                temperature=0.7,
+            ),
+            manifestation=Manifestation(
+                layer=LightLayer.flux,
+                base_shape=BaseShape.spiral_vortex,
+                motion_dynamics=MotionDynamics.centripetal_acceleration,
+                color_palette=ColorPalette(
+                    primary="#800080",
+                    secondary="#FFD700",
+                ),
+            ),
+            telemetry=Telemetry(
+                timestamp_ms=now_ms,
+                source="agns_core",
+                deterministic_hash=digest,
+            ),
         )

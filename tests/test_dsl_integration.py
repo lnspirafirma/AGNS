@@ -5,20 +5,17 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent))
 
-from agns_core.cognition.curriculum import load_lesson
 from agns_core.gateway.mock_reasoner import MockReasoner
-from agns_core.models.cognitive_dsl import CognitiveDSL
+from agns_core.models.cognitive_dsl import CognitiveDSL, IntentCategory
 
 async def test_integration():
-    print("Loading lesson...")
-    lesson = load_lesson("deep_analysis")
-    print(f"Lesson loaded: {lesson.lesson_id}")
+    print("Testing MockReasoner with new Cognitive DSL...")
 
     reasoner = MockReasoner()
-    payload = {"energy": 0.8}
 
-    print("Reasoning...")
-    dsl = await reasoner.reason(lesson, payload)
+    # Test valid intent
+    print("Reasoning for DEEP_ANALYSIS...")
+    dsl = await reasoner.reason(IntentCategory.deep_analysis)
 
     print("Validating model...")
     assert isinstance(dsl, CognitiveDSL)
@@ -28,9 +25,9 @@ async def test_integration():
     print(json.dumps(json_output, indent=2))
 
     # Verify specific fields
-    assert dsl.intent.category == "deep_analysis"
-    assert dsl.manifestation.color_model.mode == "additive_light"
-    assert len(dsl.manifestation.color_model.palette.primary) == 3
+    assert dsl.intent.category == IntentCategory.deep_analysis
+    assert dsl.manifestation.color_palette.primary == "#800080"
+    assert dsl.telemetry.source == "agns_core"
 
     print("Integration test passed!")
 
