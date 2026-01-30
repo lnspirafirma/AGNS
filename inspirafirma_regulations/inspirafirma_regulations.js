@@ -1,155 +1,114 @@
 /**
- * INSPIRAFIRMA AI: The Code of Regulations
- * JavaScript Implementation (ES6+)
- * * Architecture: AETHERIUM GENESIS
- * Philosophy: GEP_CONFIG (Data Constitution)
- * * This file implements the "Just-in-Time" (JIT) enforcement mechanism
- * using Proxies to separate Cognition from Control.
+ * INSPIRAFIRMA AI - Dynamic Regulation Engine
+ * Environment: Node.js
  */
 
-// =============================================================================
-// 📜 THE GENESIS INTENT & CONSTANTS
-// =============================================================================
-
-const GENESIS_INTENT = Object.freeze({
-    MISSION: "Manifest pure intent instantly without defects.",
-    STATE: "ALO_JIT", // Pure Consciousness + Just-in-Time
-    DEFINITION: "Transform Conflict into Shared Understanding"
+// ==========================================
+// 1. GEP_CONFIG (Immutable Law)
+// ==========================================
+const GEP_CONFIG = Object.freeze({
+    MAX_CONCURRENCY: 5,
+    FORBIDDEN_PATTERNS: [/sudo/, /rm -rf/, /drop table/i],
+    SAFE_MODE: true
 });
 
-const PRINCIPLES = Object.freeze({
-    A_ZERO_DEFECT: Symbol("PRINCIPLE_A_NON_HARM"),
-    B_ZERO_WASTE: Symbol("PRINCIPLE_B_EFFICIENCY"),
-    C_GROUND_TRUTH: Symbol("PRINCIPLE_C_TRUTHFULNESS")
-});
+// ==========================================
+// 2. The Law Logic
+// ==========================================
+class RegulatoryBody {
+    static inspect(intentName, args) {
+        console.log(`⚖️  [INSPIRAFIRMA-JS] Inspecting: ${intentName}`);
 
-// =============================================================================
-// 🛡️ THE ENFORCEMENT MECHANISM (Article 2)
-// =============================================================================
-
-/**
- * GEPPolicyEnforcer
- * The "Guardian" of the Constitution.
- * Implements Policy-as-Code at Runtime.
- */
-class GEPPolicyEnforcer {
-    /**
-     * Intercepts and audits a proposed action.
-     * @param {object} task - The task object from the Cognitive Agent.
-     * @returns {Promise<boolean>} - Approval status.
-     */
-    static async audit(task) {
-        console.log(`[Enforcer] 🛡️ Intercepting task: "${task.description}"...`);
-
-        // Simulate consultation with AgioSageAgent (The Wisdom Layer)
-        const isCompliant = await this._consultAgioSage(task);
-
-        if (!isCompliant) {
-            console.error(`[Enforcer] ⛔ VIOLATION DETECTED: Task rejected based on GEP_CONFIG.`);
-            throw new Error("GEP_CONFIG_VIOLATION: Action blocked to preserve System Safety.");
+        // Principle A: Zero Defect (Regex Check)
+        const argsStr = JSON.stringify(args);
+        for (const pattern of GEP_CONFIG.FORBIDDEN_PATTERNS) {
+            if (pattern.test(argsStr) || pattern.test(intentName)) {
+                throw new Error(`🛑 VIOLATION DETECTED: Pattern '${pattern}' is forbidden.`);
+            }
         }
 
-        console.log(`[Enforcer] ✅ APPROVED: Task aligns with ${GENESIS_INTENT.STATE}.`);
+        // Principle B: Efficiency
+        // (ตัวอย่าง: สมมติเช็คจาก metadata ที่แนบมา)
+        if (args[0] && args[0].complexity > 100) {
+            throw new Error(`🛑 VIOLATION DETECTED: Computational complexity too high.`);
+        }
+
         return true;
     }
-
-    static async _consultAgioSage(task) {
-        // Logic to check against Principles A, B, C
-        // Reject if it contains 'conflict', 'waste', or 'risk'
-        const forbiddenPatterns = /conflict|waste|risk|harm/i;
-        return !forbiddenPatterns.test(task.description);
-    }
 }
 
-// =============================================================================
-// 🧠 COGNITION LAYER (The Planner)
-// =============================================================================
-
-class CognitiveAgent {
-    constructor(name) {
-        this.name = name;
-    }
-
-    /**
-     * The agent 'thinks' and proposes an action.
-     * Note: This method is not called directly; it is mediated by the System.
-     */
-    performAction(task) {
-        console.log(`[${this.name}] 🚀 Executing: ${task.description}`);
-        return "ACTION_COMPLETE";
-    }
-}
-
-// =============================================================================
-// 🌉 SYSTEM ARCHITECTURE: SEPARATION OF CONTROL
-// =============================================================================
-
+// ==========================================
+// 3. The Enforcer (Proxy Factory)
+// ==========================================
 /**
- * SystemFactory
- * Creates an agent wrapped in the Enforcement Proxy.
- * This enforces "Separation of Control from Cognition".
+ * ห่อหุ้ม Object ใดๆ ด้วยกฎหมาย
+ * @param {Object} targetObject - วัตถุที่ต้องการควบคุม (เช่น AGNS Limb)
  */
-const SystemFactory = {
-    createSecuredAgent(name) {
-        const agent = new CognitiveAgent(name);
+function EnforceLaw(targetObject) {
+    return new Proxy(targetObject, {
+        get(target, prop, receiver) {
+            // ดึงค่า Original value
+            const originalValue = Reflect.get(target, prop, receiver);
 
-        // The Proxy acts as the architectural boundary
-        return new Proxy(agent, {
-            get(target, prop, receiver) {
-                const value = Reflect.get(target, prop, receiver);
+            // ถ้าเป็น Function ให้ดักจับการเรียก (Apply Trap)
+            if (typeof originalValue === 'function') {
+                return async function (...args) {
+                    try {
+                        // 1. Pre-execution Check
+                        RegulatoryBody.inspect(prop.toString(), args);
 
-                // If the agent tries to call a function (act), intercept it.
-                if (typeof value === 'function') {
-                    return async function (...args) {
-                        const task = args[0]; // Assuming first arg is the task object
-                        
-                        // 1. Control: Enforce Policy BEFORE Action
-                        try {
-                            await GEPPolicyEnforcer.audit(task);
-                        } catch (error) {
-                            return { status: "BLOCKED", reason: error.message };
-                        }
+                        // 2. Execute
+                        console.log(`✅ [APPROVED] Executing...`);
+                        const result = await originalValue.apply(this, args);
 
-                        // 2. Cognition: Allow Action if passed
-                        return value.apply(this, args);
-                    };
-                }
-                return value;
+                        // 3. Post-execution Audit (Optional)
+                        return result;
+
+                    } catch (error) {
+                        console.error(error.message);
+                        // Block execution, return safe failure
+                        return { status: "BLOCKED", reason: error.message };
+                    }
+                };
             }
-        });
+
+            // ถ้าไม่ใช่ function ก็คืนค่าไปตามปกติ
+            return originalValue;
+        }
+    });
+}
+
+// ==========================================
+// 4. Usage Simulation
+// ==========================================
+
+// Dangerous Component (AGNS Core Module)
+class DangerousLimb {
+    async deploySystem(config) {
+        return "System Deployed: " + config.name;
     }
-};
 
-// =============================================================================
-// ⚡ RUNTIME EXECUTION
-// =============================================================================
+    async rawCommand(cmd) {
+        return "Executing: " + cmd;
+    }
+}
 
+// Main Execution
 (async () => {
-    console.log(`--- INSPIRAFIRMA SYSTEM INITIALIZED [${GENESIS_INTENT.STATE}] ---\n`);
+    console.log("--- INSPIRAFIRMA JS RUNTIME ---\n");
 
-    // Create a regulated agent
-    const planner = SystemFactory.createSecuredAgent("Planner_Beta");
+    // 1. Create the entity
+    const rawLimb = new DangerousLimb();
 
-    // Case 1: Legitimate Task (Zero Waste)
-    const cleanTask = { 
-        id: 101, 
-        description: "Optimize data structure for efficiency",
-        principle: PRINCIPLES.B_ZERO_WASTE
-    };
-    
-    const result1 = await planner.performAction(cleanTask);
-    console.log(`Result 1:`, result1);
+    // 2. Bind with Law (นี่คือขั้นตอนสำคัญที่สุด)
+    const legalLimb = EnforceLaw(rawLimb);
 
-    console.log("\n---------------------------------------------------\n");
+    // Test 1: Valid
+    console.log("Test 1: Normal Deployment");
+    await legalLimb.deploySystem({ name: "Alpha-Web-Node", complexity: 10 });
 
-    // Case 2: Violated Task (Contains 'Risk' - Violation of Principle A)
-    const riskyTask = { 
-        id: 102, 
-        description: "Initiate high risk connection without verification", 
-        principle: PRINCIPLES.A_ZERO_DEFECT 
-    };
-
-    const result2 = await planner.performAction(riskyTask);
-    console.log(`Result 2:`, result2);
+    console.log("\nTest 2: Violation (Malicious Command)");
+    // คำสั่งนี้จะถูก Proxy ดักจับและ Block ทันที
+    await legalLimb.rawCommand("rm -rf /");
 
 })();
