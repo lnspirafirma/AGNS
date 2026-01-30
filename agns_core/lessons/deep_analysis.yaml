@@ -1,0 +1,22 @@
+lesson_id: deep_analysis
+intent_category: deep_analysis
+
+description: >
+  Teaches analytical reasoning as centripetal convergence
+  of scattered information toward a singular truth.
+
+principles:
+  core: "The Vortex of Reasoning"
+  logic: "Analysis gathers fragments into coherence"
+
+morphology_rules:
+  base_shape: spiral_vortex
+  motion: centripetal
+  allowed_colors:
+    - "#800080"   # Purple – cognition
+    - "#FFD700"   # Gold – insight
+
+guardrails:
+  max_energy: 0.9
+  forbid_colors:
+    - "#FF0000"   # Red (aggression)

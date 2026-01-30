@@ -1,3 +1,4 @@
+# LEGACY: Conceptual prototype, not part of AGNS-Core runtime
 from typing import Protocol, Dict, Any
 import uuid
 from .schemas import LessonPack, IngestedContext, CognitiveDSL

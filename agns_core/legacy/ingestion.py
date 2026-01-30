@@ -1,3 +1,4 @@
+# LEGACY: Conceptual prototype, not part of AGNS-Core runtime
 import time
 from .schemas import IngestedContext
 
