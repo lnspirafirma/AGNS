@@ -17,8 +17,18 @@ from ..models.cognitive_dsl import (
 
 class MockReasoner:
     """
-    Deterministic cognitive teacher.
-    Emits ONLY valid Cognitive DSL v1.0.
+    Deterministic cognitive teacher (Phase A / Transitional).
+
+    Purpose:
+      - Emits ONLY valid Cognitive DSL v1.0.
+      - Acts as a baseline for Schema Enforcement.
+      - Eliminates hallucination via deterministic output.
+
+    ARCHITECTURAL NOTE:
+      This implementation intentionally deviates from the `base.Reasoner` Protocol.
+      It uses a simplified signature (`intent_category`) instead of the full
+      `LessonPack` + `Payload` required by the target architecture.
+      This is a deliberate staging decision for Phase A.
     """
 
     async def reason(self, intent_category: IntentCategory) -> CognitiveDSL:
