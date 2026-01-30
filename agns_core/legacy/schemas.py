@@ -1,3 +1,4 @@
+# LEGACY: Conceptual prototype, not part of AGNS-Core runtime
 from enum import Enum
 from typing import List, Dict, Any, Optional
 from pydantic import BaseModel, Field, field_validator

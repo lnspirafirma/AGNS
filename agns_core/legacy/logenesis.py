@@ -1,3 +1,4 @@
+# LEGACY: Conceptual prototype, not part of AGNS-Core runtime
 from typing import Dict
 from .schemas import LessonPack
 

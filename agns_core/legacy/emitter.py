@@ -1,3 +1,4 @@
+# LEGACY: Conceptual prototype, not part of AGNS-Core runtime
 import orjson
 from fastapi.responses import Response
 from .schemas import CognitiveDSL
