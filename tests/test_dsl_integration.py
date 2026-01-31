@@ -7,7 +7,9 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 from agns_core.gateway.mock_reasoner import MockReasoner
 from agns_core.models.cognitive_dsl import CognitiveDSL, IntentCategory
+import pytest
 
+@pytest.mark.asyncio
 async def test_integration():
     print("Testing MockReasoner with new Cognitive DSL...")
 
