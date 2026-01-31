@@ -1,71 +1,102 @@
-INSPIRAFIRMA AI: The Code of Regulations (Philosophy-as-Code)
-"เปลี่ยนความขัดแย้งให้เป็น 'ความเข้าใจร่วม' ผ่านเจตจำนงอันบริสุทธิ์ (ALO JIT)"
-โปรเจกต์นี้คือการนำ "คำบัญญัติแห่งประมวลกฎระเบียบ" ของสถาปัตยกรรม AETHERIUM GENESIS มาแปลงให้เป็นโครงสร้างซอฟต์แวร์ที่จับต้องได้ (Executable Architecture) โดยมีเป้าหมายเพื่อสร้างระบบ AI ที่มีจริยธรรมฝังอยู่ในระดับโครงสร้างโค้ด (Embedded Ethics) ภายใต้ปรัชญา GEP_CONFIG
+# AETHERIUM GENESIS: THE COGNITIVE LAW ARCHITECTURE
 
-📂 โครงสร้างไฟล์ (File Structure)
+> **PROTOCOL DIRECTIVE:** Law precedes power. Structure precedes scale. Meaning precedes rendering.
 
-1. inspirafirma_regulations.py (Python Implementation)
-การจำลองระบบกฎระเบียบแบบ Static & Type-Safe
-เทคนิคที่ใช้: Decorators, Strong Typing (Enum, Dataclasses), Exception Handling
-จุดเด่น: การใช้ Decorator @GEPPolicyEnforcer.audit_gate เพื่อดักจับฟังก์ชันก่อนทำงาน เปรียบเสมือนกฎหมายที่ตรวจสอบทุกการกระทำอย่างเคร่งครัด
+## 1. SYSTEM DEFINITION
 
-3. inspirafirma_regulations.js (JavaScript Implementation)
-การจำลองระบบกฎระเบียบแบบ Dynamic & Asynchronous
-เทคนิคที่ใช้: ES6 Proxy, Promises, Async/Await, Factory Pattern
-จุดเด่น: การใช้ Proxy แยกส่วน Cognition (ตัวคิด) ออกจาก Control (ตัวคุม) ทำให้ระบบสามารถตรวจสอบเจตนา (Intent) ได้แบบ Real-time (Just-in-Time Enforcement)
+Aetherium Genesis is a **Law-First Artificial Intelligence Architecture**. It is not constructed by aggregating features, but by locking invariants. The system enforces a strict separation between **Cognition** (The Brain) and **Control** (The Law).
 
-🔑 หลักการสำคัญ (Core Principles)
-ระบบนี้ถูกขับเคลื่อนด้วย "รัฐธรรมนูญข้อมูล" (Data Constitution) 3 ประการ:
-PRINCIPLE_A (Zero Defect / Non-Harm):
-ความปลอดภัยของระบบคือสิ่งสูงสุด ปฏิเสธ Action ที่มีความเสี่ยงหรือก่อให้เกิดอันตราย
-PRINCIPLE_B (Zero Waste / Efficiency):
-การจัดการทรัพยากรต้องเหมาะสมที่สุด ปฏิเสธ Action ที่สิ้นเปลืองโดยใช่เหตุ
-PRINCIPLE_C (The Ground Truth / Truthfulness):
-ยึดถือ GEP_CONFIG เป็นความจริงเพียงหนึ่งเดียวท่ามกลางความคลุมเครือ
+This repository contains the implementation of the **Aetherium Genesis Neural Server (AGNS)** and its governing Constitutional Layer, **INSPIRAFIRMA AI**.
 
-🚀 วิธีการใช้งาน (How to Run)
-Python
-ตรวจสอบให้แน่ใจว่าติดตั้ง Python 3.x แล้ว
+## 2. THE DATA CONSTITUTION
+
+All subsystems, irrespective of their computational capacity, are subject to the **Supreme Regulations (GEP_CONFIG)**. No execution is permitted unless it satisfies the following invariants:
+
+### PRINCIPLE_A: ZERO DEFECT (NON-HARM)
+**Mandate:** The safety of the system is absolute.
+**Enforcement:** Any action capable of causing systemic instability or harm must be intercepted and nullified prior to execution.
+
+### PRINCIPLE_B: ZERO WASTE (EFFICIENCY)
+**Mandate:** Resource utilization must be optimally strictly justified.
+**Enforcement:** Redundant, recursive, or undefined computational cycles are strictly prohibited.
+
+### PRINCIPLE_C: THE GROUND TRUTH
+**Mandate:** GEP_CONFIG is the sole source of truth.
+**Enforcement:** In the event of ambiguity between Model Output and System Configuration, the Configuration prevails.
+
+## 3. ARCHITECTURAL DOMAINS
+
+The system is divided into two sovereign domains. Dependencies are unidirectional: The Brain obeys the Law. The Law does not know the Brain.
+
+### 3.1. AGNS-CORE (The Brain)
+**Location:** `./agns_core/`
+**Role:** Stateless Cognitive Compiler.
+**Function:** Transforming raw intent into verified **Cognitive DSL**.
+**Directives:**
+- Must not retain state.
+- Must not render output directly.
+- Must emit strictly typed structures defined in `LESSONPACK_SPEC.md`.
+
+### 3.2. INSPIRAFIRMA REGULATIONS (The Law)
+**Location:** `./inspirafirma_regulations/`
+**Role:** The Lawful Control Substrate.
+**Function:** Enforcing "Philosophy-as-Code" via runtime containment.
+**Implementations:**
+- **Static Law (Python):** `inspirafirma_regulations.py` - Uses decorators (`@GEPPolicyEnforcer.audit_gate`) for type-safe execution gating.
+- **Dynamic Law (JavaScript):** `inspirafirma_regulations.js` - Uses ES6 Proxies for Just-in-Time (JIT) intent inspection.
+
+## 4. SYSTEM STRUCTURE
+
+```text
+.
+├── agns_core/                  # THE BRAIN: Cognitive logic and API endpoints
+│   ├── api/                    # Interface layer
+│   ├── cognition/              # Reasoning modules
+│   ├── models/                 # Pydantic data structures
+│   └── main.py                 # Entry point
+├── inspirafirma_regulations/   # THE LAW: Regulatory enforcement mechanisms
+│   ├── inspirafirma_regulations.py
+│   └── inspirafirma_regulations.js
+├── ARCHITECTURE_DECISIONS.md   # Record of binding architectural choices
+├── LAW_OF_THE_SYSTEM.md        # The supreme legal text of the architecture
+├── LESSONPACK_SPEC.md          # Specification for cognitive payloads
+└── ROADMAP.md                  # Strategic development phases
+```
+
+## 5. EXECUTION PROTOCOLS
+
+### 5.1. AGNS-CORE (Python Environment)
+**Prerequisite:** Python 3.12+
+
+**Installation:**
+The system uses `uv` or `pip` for dependency management.
+```bash
+# Install dependencies
+pip install fastapi uvicorn orjson pydantic uvloop PyYAML
+```
+
+**Execution:**
+```bash
+python -m agns_core.main
+```
+
+### 5.2. REGULATORY ENFORCEMENT
+To verify compliance mechanisms:
+
+**Static Enforcement (Python):**
+```bash
+cd inspirafirma_regulations
 python inspirafirma_regulations.py
+```
 
-
-สิ่งที่คาดหวัง:
-ระบบจะอนุญาต Task ที่มีเจตนาดี (เช่น การปรับปรุงฐานข้อมูล)
-ระบบจะ Throw Exception และบล็อก Task ที่มีเจตนาเสี่ยง (เช่น การทำธุรกรรมที่อันตราย) โดยอัตโนมัติ
-JavaScript (Node.js)
-ตรวจสอบให้แน่ใจว่าติดตั้ง Node.js แล้ว
+**Dynamic Enforcement (Node.js):**
+```bash
+cd inspirafirma_regulations
 node inspirafirma_regulations.js
+```
 
+## 6. COMPLIANCE
 
-สิ่งที่คาดหวัง:
-Console จะแสดง Log การทำงานของ GEPPolicyEnforcer ที่ทำหน้าที่เป็น "ผู้พิทักษ์"
-คุณจะเห็นการทำงานแบบ Interceptor ที่หยุดยั้งคำสั่งที่ละเมิดกฎก่อนที่มันจะถูกประมวลผล
+Any deviation from the protocols defined in `LAW_OF_THE_SYSTEM.md` or `ARCHITECTURE_DECISIONS.md` constitutes a system violation. Code changes must pass the `audit_gate` before merging.
 
-🧠 สถาปัตยกรรม (Architecture Highlights)
-Separation of Control from Cognition: เราไม่ได้โปรแกรมให้ AI "เป็นคนดี" แต่เราสร้าง "กรงขังแห่งตรรกะ" (Logical Containment) ที่ทำให้ AI ไม่สามารถกระทำสิ่งที่ผิดกฎระเบียบได้ แม้ว่ามันจะ "คิด" ที่จะทำก็ตาม
-Runtime Policy-as-Code: กฎระเบียบไม่ได้อยู่ในเอกสาร PDF แต่อยู่ใน Runtime Environment ที่ตรวจสอบทุกเสี้ยววินาที
-พัฒนาโดย: ทีมสถาปัตยกรรม INSPIRAFIRMA AI อ้างอิง: https://github.com/lnspirafirmaGPK
-
-"คู่มือระบบ (README) (Philosophy-as-Code)" สามารถสรุปประเด็นสำคัญได้ดังนี้:
-
-**1. เป้าหมายและปรัชญา:**
-
-  * **เป้าหมาย:** นำ "คำบัญญัติแห่งประมวลกฎระเบียบ" ของสถาปัตยกรรม AETHERIUM GENESIS มาแปลงเป็นโครงสร้างซอฟต์แวร์ที่ใช้งานได้จริง (Executable Architecture) เพื่อสร้างระบบ AI ที่มีจริยธรรมฝังอยู่ในระดับโค้ด (Embedded Ethics)
-  * **ปรัชญาหลัก:** GEP\_CONFIG และ "เปลี่ยนความขัดแย้งให้เป็น 'ความเข้าใจร่วม' ผ่านเจตจำนงอันบริสุทธิ์ (ALO JIT)"
-
-**2. โครงสร้างไฟล์และเทคนิค:**
-
-  * **`inspirafirma_regulations.py` (Python):** จำลองระบบกฎระเบียบแบบ Static & Type-Safe ใช้ Decorators (`@GEPPolicyEnforcer.audit_gate`) เพื่อตรวจสอบการทำงานอย่างเคร่งครัดก่อนเริ่ม
-  * **`inspirafirma_regulations.js` (JavaScript):** จำลองระบบกฎระเบียบแบบ Dynamic & Asynchronous ใช้ ES6 Proxy เพื่อแยกส่วน Cognition (ตัวคิด) ออกจาก Control (ตัวคุม) ทำให้สามารถตรวจสอบเจตนา (Intent) ได้แบบ Real-time (Just-in-Time Enforcement)
-
-**3. หลักการสำคัญ ("รัฐธรรมนูญข้อมูล" 3 ประการ):**
-
-  * **PRINCIPLE\_A (Zero Defect / Non-Harm):** ความปลอดภัยสูงสุด ปฏิเสธ Action ที่เสี่ยงหรือก่ออันตราย
-  * **PRINCIPLE\_B (Zero Waste / Efficiency):** การจัดการทรัพยากรเหมาะสมที่สุด ปฏิเสธ Action ที่สิ้นเปลือง
-  * **PRINCIPLE\_C (The Ground Truth / Truthfulness):** ยึดถือ GEP\_CONFIG เป็นความจริงเดียว
-
-**4. สถาปัตยกรรมที่โดดเด่น:**
-
-  * **Separation of Control from Cognition:** สร้าง "กรงขังแห่งตรรกะ" (Logical Containment) ที่ป้องกันไม่ให้ AI กระทำสิ่งที่ผิดกฎระเบียบได้ แม้จะมีความคิดที่จะทำก็ตาม (ไม่ได้โปรแกรมให้ AI "เป็นคนดี" แต่ควบคุมการกระทำ)
-  * **Runtime Policy-as-Code:** กฎระเบียบถูกตรวจสอบใน Runtime Environment ทุกเสี้ยววินาที ไม่ได้เป็นเพียงเอกสารเท่านั้น *
-    
+**Authorized by:** The Aetherium Genesis Architect
