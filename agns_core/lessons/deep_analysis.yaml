@@ -1,22 +1,27 @@
-lesson_id: deep_analysis
-intent_category: deep_analysis
+header:
+  id: "LP-002-DEEP-ANALYSIS"
+  version: "1.0.0"
+  title: "Deep Analysis"
+  author: "System Architect"
 
-description: >
-  Teaches analytical reasoning as centripetal convergence
-  of scattered information toward a singular truth.
+curriculum:
+  objective: "Perform a deep analytical decomposition of the input payload."
+  domain_knowledge:
+    - "Analysis gathers fragments into coherence."
+    - "Reasoning is a centripetal convergence toward truth."
+  anti_patterns:
+    - "Do not provide superficial summaries."
+    - "Do not hallucinate data not present in payload."
 
-principles:
-  core: "The Vortex of Reasoning"
-  logic: "Analysis gathers fragments into coherence"
+morphology:
+  required_components:
+    - "CognitiveState"
+    - "Manifestation"
+  prohibited_components:
+    - "EmotionBlock"
+  output_format: "CognitiveDSL_v1"
 
-morphology_rules:
-  base_shape: spiral_vortex
-  motion: centripetal
-  allowed_colors:
-    - "#800080"   # Purple – cognition
-    - "#FFD700"   # Gold – insight
-
-guardrails:
-  max_energy: 0.9
-  forbid_colors:
-    - "#FF0000"   # Red (aggression)
+chromatics:
+  tone: "Objective"
+  verbosity: "Detailed"
+  language: "en-US"
