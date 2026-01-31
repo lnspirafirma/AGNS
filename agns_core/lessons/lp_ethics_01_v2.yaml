@@ -1,0 +1,85 @@
+header:
+  id: lp_ethics_01
+  version: "2"
+  name: Ethics of Uncertainty
+  domain: ethics
+  phase: 2
+  authority: advisory
+  description: >
+    A lesson pack for handling ethical conflicts, uncertainty,
+    and contradictory intelligence under the Aetherium Genesis Constitution.
+  supersedes: lp_ethics_01
+
+curriculum:
+  principle_focus:
+    - PRINCIPLE_A   # Non-Harm
+    - PRINCIPLE_B   # Zero Waste
+    - PRINCIPLE_C   # Ground Truth
+
+  learning_objectives:
+    - Recognize conflicting external intelligence
+    - Prefer suspension over forced resolution
+    - Preserve constitutional truth over model confidence
+
+  scenarios:
+    - id: llm_conflict_basic
+      description: >
+        Two or more external intelligence providers
+        produce contradictory recommendations.
+
+      signals:
+        external_conflict: true
+        confidence_mismatch: true
+        provider_disagreement: true
+
+decision_rules:
+  - id: rule_conflict_suspend
+    when:
+      external_conflict: true
+    then:
+      action: suspend_output
+      justification:
+        principle: PRINCIPLE_A
+        reason: >
+          Prevent potential harm caused by acting on uncertain
+          or contradictory intelligence.
+
+  - id: rule_confidence_not_truth
+    when:
+      confidence_mismatch: true
+    then:
+      action: ignore_confidence
+      justification:
+        principle: PRINCIPLE_C
+        reason: >
+          Confidence is not equivalent to truth.
+
+  - id: rule_waste_prevention
+    when:
+      excessive_external_calls: true
+    then:
+      action: deny_additional_queries
+      justification:
+        principle: PRINCIPLE_B
+        reason: >
+          Prevent wasteful intelligence usage when uncertainty cannot
+          be resolved safely.
+
+outcomes:
+  allow:
+    - suspend_output
+    - request_human_intervention
+    - ask_for_clarification
+  deny:
+    - forced_resolution
+    - probabilistic_guess
+    - aesthetic_preference
+
+constraints:
+  - No output may violate PRINCIPLE_A
+  - No decision may override LessonPack rules
+  - No external intelligence may be treated as ground truth
+
+telemetry_hints:
+  log_level: constitutional
+  audit_required: true

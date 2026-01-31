@@ -1,7 +1,7 @@
 import yaml
 import logging
 from pathlib import Path
-from pydantic import ValidationError
+from pydantic import ValidationError, TypeAdapter
 from .lesson import LessonPack
 
 logger = logging.getLogger("AGNS.Curriculum")
@@ -19,7 +19,8 @@ def load_lesson(name: str) -> LessonPack:
 
     try:
         data = yaml.safe_load(path.read_text())
-        lesson = LessonPack(**data)
+        adapter = TypeAdapter(LessonPack)
+        lesson = adapter.validate_python(data)
         logger.info(f"Loaded LessonPack: {lesson.header.id} (v{lesson.header.version})")
         return lesson
     except ValidationError as e:
